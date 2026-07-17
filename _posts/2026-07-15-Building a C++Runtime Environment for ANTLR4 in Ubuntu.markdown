@@ -4,7 +4,7 @@ layout: post
 ---
 # 一、What is ANTLR?
 
-**ANTLR (Another Tool for Language Recognition) is a powerful syntax analyzer generator used for reading, processing, executing, or translating structured text or binary files. It is widely used to build language tools such as parsers, interpreters, and compilers for programming languages, configuration files, and data formats (such as JSON, XML).
+**ANTLR** (Another Tool for Language Recognition) is a powerful syntax analyzer generator used for reading, processing, executing, or translating structured text or binary files. It is widely used to build language tools such as parsers, interpreters, and compilers for programming languages, configuration files, and data formats (such as JSON, XML).
 
 # 二、Environment Configuration
 ## Basic dependencies
@@ -16,12 +16,14 @@ java -version
 ```
 ## Configure ANTLR4
 1. Download the tool
+
 ```bash
 cd /usr/local/lib
 sudo wget http://www.antlr.org/download/antlr-4.13.2-complete.jar
 ```
 2. Create a Command Line for the Tool
 Create an antlr4 file and add the following content:
+
 ```bash
 #! /bin/bash
 export CLASSPATH=".:/usr/local/lib/antlr-4.13.2-complete.jar:$CLASSPATH"
@@ -47,6 +49,7 @@ source ~/.bashrc
 ```
 ## C++ Runtime
 Download and compile runtime libraries. Note that the version of the runtime library and the version of the. jar tool should be consistent.
+
 ```bash
 wget https://www.antlr.org/download/antlr4-cpp-runtime-4.13.2-source.zip
 unzip antlr4-cpp-runtime-4.13.2-source.zip && cd antlr4-cpp-runtime-4.13.2-source
@@ -57,6 +60,7 @@ ldconfig
 ```
 # 三、Simple Example
 1. Prepare the Hello.g4 syntax file
+
 ```bash
 grammar Hello; 
 r : 'hello' ID ; 
@@ -64,9 +68,10 @@ ID : [a-zA-Z]+ ;
 WS : [ \t\r\n]+ -> skip ;
 ```
 Prepare the main.cpp file
+
 ```cpp
 #include <iostream>
-#include "antlr4-runtime/antlr4-runtime.h" // 修正為標準 apt 引入路徑
+#include "antlr4-runtime/antlr4-runtime.h" 
 #include "HelloLexer.h"
 #include "HelloParser.h"
 
@@ -80,12 +85,13 @@ int main() {
     HelloParser parser(&tokens);
     tree::ParseTree* tree = parser.r();
 
-    std::cout << "输入文字: " << input_text << std::endl;
-    std::cout << "解析树結果: " << tree->toStringTree(&parser) << std::endl;
+    std::cout << "Input Characters: " << input_text << std::endl;
+    std::cout << "Output Parse Tree: " << tree->toStringTree(&parser) << std::endl;
     return 0;
 }
 ```
 2. Compile the file
+
 ```bash
 java -jar ~/antlr4/antlr-4.13.2-complete.jar -Dlanguage=Cpp Hello.g4
 g++ -std=c++17 main.cpp Hello*.cpp -o hello_world -I/usr/local/include/antlr4-runtime -lantlr4-runtime
@@ -93,12 +99,13 @@ g++ -std=c++17 main.cpp Hello*.cpp -o hello_world -I/usr/local/include/antlr4-ru
 ```
 ## View syntax tree using Grun
 1. Use the. g4 file above
+
 ```bash
 javac Hello*.java
 grun Hello r -tree
-# 输入 hello world
-# 输入ctrl+D 结束输入
-# 预期结果
+# Input `hello world``
+# Input ctrl+D to End the Input.
+# the expected result:
 ## hello world
 ## (r hello world)
 ```
